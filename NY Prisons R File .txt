@@ -1,0 +1,15 @@
+library(tidyverse)
+data = read.csv("C:\\Users\\gachi\\Favorites\\Downloads\\Daily_Inmates_In_Custody.csv") %>% 
+  mutate(
+    bradh_numeric = ifelse(BRADH == "Y", "1", 
+                           ifelse(BRADH == "N", "0", BRADH)),
+    bradh_numeric = as.numeric(bradh_numeric),
+    custody_numeric = ifelse(CUSTODY_LEVEL == "MIN", "0",
+                             ifelse(CUSTODY_LEVEL == "MED", "1",
+                             ifelse(CUSTODY_LEVEL == "MAX", "2", CUSTODY_LEVEL))
+  ),
+    custody_numeric = as.numeric(custody_numeric)) %>% 
+  filter(
+    custody_numeric == 0 | custody_numeric == 1 | custody_numeric == 2
+  )
+write_csv(data, "C:\\Users\\gachi\\Favorites\\Downloads\\Daily_Inmates_In_Custody.csv")
